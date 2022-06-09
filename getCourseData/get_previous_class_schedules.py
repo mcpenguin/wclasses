@@ -1,11 +1,9 @@
 # python script to get previous years' class schedules
 
-import mechanize
-import json
 from bs4 import BeautifulSoup
-import requests
-from helpers import parse_time_string
-from datetime import datetime, timedelta
+
+# from helpers import parse_time_string
+from datetime import datetime
 import pytz
 
 # %%
@@ -212,8 +210,7 @@ if __name__ == '__main__':
                 '_id': 0}).sort([('subjectCode', 1), ('catalogNumber', 1)]))
     firefox_options = Options()
     firefox_options.add_argument("--headless")
-    driver = webdriver.Firefox(executable_path=os.getenv(
-        "DRIVER_PATH"), options=firefox_options)
+    driver = webdriver.Firefox(options=firefox_options)
     try:
         print("Driver up and running")
         get_previous_class_schedule(driver, client)
