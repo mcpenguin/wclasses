@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  getCourseData:
+    image: python:3
+    build: ./getCourseData
+    env_file:
+    - .env
