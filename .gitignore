@@ -1,2 +1,4 @@
 .env
 getCourseData/geckodriver
+geckodriver.log
+getCourseData/__pycache__

@@ -2,7 +2,7 @@
 
 from bs4 import BeautifulSoup
 
-# from helpers import parse_time_string
+from helpers import parse_time_string
 from datetime import datetime
 import pytz
 
@@ -191,7 +191,7 @@ def get_previous_class_schedule(driver, client, specific_terms=None):
             add_subject_to_db(term, level, subject, classesList, client)
 
             print(f"Added courses for subject {subject} for term {term} for level {'UG' if level == 'under' else 'G'}")
-        except:
+        except Exception as e:
             pass
 
         # once done, switch back to the form frame
@@ -203,6 +203,7 @@ def get_previous_class_schedule(driver, client, specific_terms=None):
 if __name__ == '__main__':
     # get mongodb database using mongo client
     client = MongoClient(os.getenv('MONGO_WRITER_URL'))
+    print("Connected to client")
 
     # get all courses from mongo client
     collection = client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSE_DESCRIPTIONS')]
@@ -210,7 +211,7 @@ if __name__ == '__main__':
                 '_id': 0}).sort([('subjectCode', 1), ('catalogNumber', 1)]))
     firefox_options = Options()
     firefox_options.add_argument("--headless")
-    driver = webdriver.Firefox(options=firefox_options)
+    driver = webdriver.Firefox(executable_path='/home/marcuschan/geckodrivers/geckodriver', options=firefox_options)
     try:
         print("Driver up and running")
         get_previous_class_schedule(driver, client)

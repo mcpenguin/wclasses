@@ -67,6 +67,67 @@ client = MongoClient(MONGO_URL)
 db_courses = client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSES')]
 db_courses_descriptions = client['waterloo'][os.getenv('DB_COLLECTION_COURSE_DESCRIPTIONS')]
 
+# parse time string
+# HH:MM-HH:MM(days)[MM/DD-MM/DD]
+# assume timeString is not None
+def parse_time_string(timeString):
+    if timeString != "":
+        # get start and end time hours
+        startTimeHours = int(timeString[0:2])
+        startTimeMins = int(timeString[3:5])
+        endTimeHours = int(timeString[6:8])
+        endTimeMins = int(timeString[9:11])
+        # get days of the week
+        i = 11
+        days = []
+        while len(timeString) > i and not timeString[i].isnumeric():
+            # tues/thurs
+            if timeString[i] == 'T':
+                # tues: next char is upper
+                if len(timeString) <= i+1 or not timeString[i+1].islower(): 
+                    days.append('T')
+                    i+=1
+                else:
+                    days.append('Th')
+                    i+=2
+            # sat/sun
+            elif timeString[i] == 'S':
+                # sat: next char is upper
+                if len(timeString) <= i+1 or not timeString[i+1].islower(): 
+                    days.append('S')
+                    i+=1
+                else:
+                    days.append('Su')
+                    i+=2
+            # any other days
+            else:
+                days.append(timeString[i])
+                i+=1
+        # parse startTime and endTime
+
+        # if startTimeHours is < 8, then it is in PM
+        if startTimeHours < 8:
+            startTimeHours += 12
+            endTimeHours += 12
+        # if startTimeHours > endTimeHours, times "wrap" around noon
+        if startTimeHours > endTimeHours:
+            endTimeHours += 12
+        # output result - times are in 24h
+        return {
+            'startTime': {
+                'hours': startTimeHours,
+                'mins': startTimeMins,
+            },
+            'endTime': {
+                'hours': endTimeHours,
+                'mins': endTimeMins,
+            },
+            'days': days
+        }
+    else:
+        return None
+
+
 # parse term code into name
 # eg 1219 -> "Fall 2021"
 def parse_term_code(termcode):

@@ -28,8 +28,7 @@ if __name__ == '__main__':
                 '_id': 0}).sort([('subjectCode', 1), ('catalogNumber', 1)]))
     firefox_options = Options()
     firefox_options.add_argument("--headless")
-    driver = webdriver.Firefox(executable_path=os.getenv(
-        "DRIVER_PATH"), options=firefox_options)
+    driver = webdriver.Firefox(options=firefox_options)
     try:
         CURRENT_TERM = get_default_term()
         get_previous_class_schedule(driver, client, [CURRENT_TERM])
