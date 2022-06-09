@@ -208,8 +208,8 @@ def get_previous_class_schedule(driver, client, specific_terms=None):
         driver.switch_to.frame(1)
         
         # do processing on the subject
-        class_soup = BeautifulSoup(driver.page_source, "html.parser")
         try:
+            class_soup = BeautifulSoup(driver.page_source, "html.parser")
             # get classes list
             classesList = process_subject_data(term, level, subject, class_soup)
             # add classesList list to db
@@ -236,7 +236,7 @@ if __name__ == '__main__':
                 '_id': 0}).sort([('subjectCode', 1), ('catalogNumber', 1)]))
     firefox_options = Options()
     firefox_options.add_argument("--headless")
-    driver = webdriver.Firefox(executable_path=os.getenv('DRIVER_PATH'), options=firefox_options)
+    driver = webdriver.Firefox(options=firefox_options)
     try:
         print("Driver up and running")
         get_previous_class_schedule(driver, client)
