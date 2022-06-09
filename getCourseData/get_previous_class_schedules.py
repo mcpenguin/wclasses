@@ -66,7 +66,7 @@ def process_subject_data(term, level, subject, soup):
                 'level': 'UG' if level == "under" else 'G' 
             }
             # add last updated time to course
-            course['dateUpdated'] = datetime.now(pytz.timezone('US/Eastern')).strftime("%Y-%m-%d %H:%M:%S")
+            course['dateUpdated'] = datetime.now(pytz.timezone('US/Eastern'))
 
         # if tr is a course data row, add details to the course object
         elif children[0].name == 'td' and len(children) > 2:
