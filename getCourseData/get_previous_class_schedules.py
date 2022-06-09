@@ -109,14 +109,39 @@ def process_subject_data(term, level, subject, soup):
                         [buildingCode, roomNumber] = ["", ""]
                     # HH:MM-HH:MM(days)[MM/DD-MM/DD]
                     parsedTime = parse_time_string(time)
+
+                    enrolCap = subchildren[6].text.strip() if len(subchildren) >= 7 else None
+                    enrolTotal = subchildren[7].text.strip() if len(subchildren) >= 8 else None
+
+                    if len(subchildren) >= 2:
+                        section = subchildren[1].text.strip()
+                        sectionAsList = section.split()
+                        filter(None, section)
+                        sectionAsObject = {
+                            'type': sectionAsList[0],
+                            'num': sectionAsList[1]
+                        }
+                    else:
+                        sectionAsObject = None
+
+                    if len(subchildren) >= 3:
+                        campusLocation = subchildren[2].text.strip()
+                        campusLocationAsList = campusLocation.split()
+                        filter(None, campusLocation)
+                        campusLocationAsObject = {
+                            'first': campusLocationAsList[0],
+                            'second': campusLocationAsList[1]
+                        }
+                    else:
+                        campusLocationAsObject = None
                     
                     classes += [{
                         **course,
                         'classNumber': subchildren[0].text.strip() if len(subchildren) >= 1 else None,
-                        'section': subchildren[1].text.strip() if len(subchildren) >= 2 else None,
-                        'campusLocation': subchildren[2].text.strip() if len(subchildren) >= 3 else None,
-                        'enrolCap': subchildren[6].text.strip() if len(subchildren) >= 7 else None,
-                        'enrolTotal': subchildren[7].text.strip() if len(subchildren) >= 8 else None,
+                        'section': sectionAsObject,
+                        'campusLocation': campusLocationAsObject,
+                        'enrolCap': int(enrolCap) if enrolCap else None,
+                        'enrolTotal': int(enrolTotal) if enrolCap else None,
                         'time': parsedTime,
                         'buildingCode': buildingCode,
                         'roomNumber': roomNumber,
