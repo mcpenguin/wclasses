@@ -169,7 +169,8 @@ def add_subject_to_db(term, level, subject, classesList, client):
     # insert new data
     client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSES')].insert_many(classesList)
 
-def get_previous_class_schedule(driver, client, specific_terms=None):
+# start_term: term to start at
+def get_previous_class_schedule(driver, client, start_term=None):
     driver.get(url)
     # wait for page to load
     WebDriverWait(driver, TIMEOUT).until(
@@ -182,10 +183,10 @@ def get_previous_class_schedule(driver, client, specific_terms=None):
 
     # get list of terms, levels and subjects
     # list of termcodes
-    if specific_terms == None:
-        terms = [option.attrs['value'] for option in soup.find('select', {'name': 'sess'}).find_all('option')]
-    else:
-        terms = specific_terms
+    terms = [option.attrs['value'] for option in soup.find('select', {'name': 'sess'}).find_all('option')]
+    if start_term is not None:
+        terms = list(filter((lambda term: int(term) <= int(start_term)), terms)) 
+
     # list of levels (undergrad or grad)
     levels = [option.attrs['value'] for option in soup.find('select', {'name': 'level'}).find_all('option')]
     # list of subject codes (get if non empty)
@@ -240,7 +241,7 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(options=chrome_options)
     try:
         print("Driver up and running")
-        get_previous_class_schedule(driver, client)
+        get_previous_class_schedule(driver, client, start_term=os.getenv("CUSTOM_START_TERM"))
     finally:
         driver.close()
 
