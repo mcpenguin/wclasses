@@ -1,4 +1,5 @@
 import { Date, Document } from "mongoose";
+import ICourseCode from "./ICourseCode";
 
 enum Day { 'M', 'T', 'W', 'Th', 'F', 'Sa', 'Su' };
 
@@ -24,11 +25,11 @@ interface ITime extends Document {
 }
 
 export default interface IClass extends Document {
+    subjectCode: string,
+    catalogNumber: string,
     term: string,
     level: ["UG", "G"],
     dateUpdated: Date,
-    subjectCode: string,
-    catalogNumber: string,
     units?: string,
     title: string,
     notes?: string,

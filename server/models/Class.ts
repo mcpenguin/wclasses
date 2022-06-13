@@ -67,6 +67,10 @@ const ClassSchema: Schema = new Schema({
         type: String,
         required: true,
     },
+    catalogNumber: {
+        type: String,
+        required: true,
+    },
     units: {
         type: String,
         required: false,

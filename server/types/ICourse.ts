@@ -1,12 +1,11 @@
 import { Document } from "mongoose";
+import ICourseCode from "./ICourseCode";
 
-export default interface ICourse extends Document {
+export default interface ICourse extends Document, ICourseCode {
     courseId: string,
     associatedAcademicCareer: string,
     associatedAcademicGroupCode: string,
     associatedAcademicOrgCode: string,
-    subjectCode: string,
-    catalogNumber: string,
     title: string,
     description: string,
     gradingBasis: string,
