@@ -8,13 +8,15 @@
 
 3. Add the folder containing the geckodriver to your `$PATH`
 
-4. Run `cd getCourseData`
+4. Place respective .env files in each folder:
+- `getCourseData`
+- `server`
 
-5. Get .env file
+5. Run `cd getCourseData`
 
-5. Run `pip install -r requirements.txt`
+6. Run `pip install -r requirements.txt`
 
-6. Run `python3 get_previous_class_schedules.py`
+7. Run `python3 get_previous_class_schedules.py`
 
 
 

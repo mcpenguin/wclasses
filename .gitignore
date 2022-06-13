@@ -2,3 +2,6 @@
 getCourseData/geckodriver
 geckodriver.log
 getCourseData/__pycache__
+
+server/node_modules
+server/dist
