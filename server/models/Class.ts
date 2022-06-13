@@ -1,10 +1,6 @@
 import { model, Schema } from "mongoose"
 import IClass from "../types/IClass";
 
-enum Level { "UG", "G" };
-
-enum Day { "M", "T", "W", "Th", "F", "Sa", "Su" };
-
 const SectionSchema: Schema = new Schema({
     type: {
         type: String,
@@ -49,7 +45,7 @@ const TimeSchema: Schema = new Schema({
         required: true,
     },
     days: { 
-        type: [Day],
+        type: [String],
         required: true,
     },
 })
@@ -60,7 +56,7 @@ const ClassSchema: Schema = new Schema({
         required: true,
     },
     level: {
-        type: Level,
+        type: String,
         required: true,
     },
     dateUpdated: {
@@ -119,6 +115,7 @@ const ClassSchema: Schema = new Schema({
         type: String,
         required: false,
     }
-})
+}
+)
 
-export default model<IClass>('Class', ClassSchema);
+export default model<IClass>('Class', ClassSchema, 'courses');

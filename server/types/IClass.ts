@@ -1,5 +1,7 @@
 import { Date, Document } from "mongoose";
 
+enum Day { 'M', 'T', 'W', 'Th', 'F', 'Sa', 'Su' };
+
 interface ISection extends Document {
     type: string,
     num: string
@@ -18,7 +20,7 @@ interface IHoursMins extends Document {
 interface ITime extends Document {
     startTime: IHoursMins,
     endTime: IHoursMins,
-    days: ['M', 'T', 'W', 'Th', 'F', 'Sa', 'Su'][],
+    days: Day[],
 }
 
 export default interface IClass extends Document {
