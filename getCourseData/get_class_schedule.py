@@ -1,7 +1,7 @@
 # Get class schedule data from classes.uwaterloo.ca (both undergrad + grad), store into MongoDB database
 # Takes about 20 minutes to run once
 
-from helpers import get_default_term
+from helpers import get_default_term, get_last_term_code
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -10,8 +10,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
-from selenium.webdriver.firefox.options import Options
+
+from selenium.webdriver.chrome.options import Options
 
 from get_previous_class_schedules import get_previous_class_schedule
 
@@ -24,14 +24,15 @@ if __name__ == '__main__':
 
     # get all courses from mongo client
     collection = client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSES')]
-    courses = list(collection.find({}, {'subjectCode': 1, 'catalogNumber': 1,
-                '_id': 0}).sort([('subjectCode', 1), ('catalogNumber', 1)]))
-    firefox_options = Options()
-    firefox_options.add_argument("--headless")
-    driver = webdriver.Firefox(options=firefox_options)
+    
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(options=chrome_options)
+
     try:
         CURRENT_TERM = get_default_term()
-        get_previous_class_schedule(driver, client, [CURRENT_TERM])
+        LAST_TERM = get_last_term_code(CURRENT_TERM)
+        get_previous_class_schedule(driver, client, [LAST_TERM, CURRENT_TERM])
     finally:
         driver.close()
 
