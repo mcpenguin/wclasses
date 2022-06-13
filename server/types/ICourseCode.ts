@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export default interface ICourseCode extends Document {
+export default interface ICourseCode {
     subjectCode: string,
     catalogNumber: string,
 }

@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import ICourseCode from "./ICourseCode";
 
-export default interface ICourse extends Document, ICourseCode {
+export default interface ICourse extends ICourseCode, Document {
     courseId: string,
     associatedAcademicCareer: string,
     associatedAcademicGroupCode: string,
