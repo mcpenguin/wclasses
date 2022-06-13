@@ -118,4 +118,4 @@ const ClassSchema: Schema = new Schema({
 }
 )
 
-export default model<IClass>('Class', ClassSchema, 'courses');
+export default model<IClass>('Class', ClassSchema, 'classes');
