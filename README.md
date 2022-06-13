@@ -12,11 +12,23 @@
 - `getCourseData`
 - `server`
 
-5. Run `cd getCourseData`
+## Running Python Script
 
-6. Run `pip install -r requirements.txt`
+1. Run `cd getCourseData`
 
-7. Run `python3 get_previous_class_schedules.py`
+2. Run `pip install -r requirements.txt`
+
+3. Run `python3 get_previous_class_schedules.py`
+
+## Running API
+
+1. Run `cd server`
+
+2. Run `npm install`
+
+3. Run `npm run build && npm start`
+
+4. The API will be hosted on `localhost:8000`
 
 
 
