@@ -170,7 +170,7 @@ def add_subject_to_db(term, level, subject, classesList, client):
     client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSES')].insert_many(classesList)
 
 # start_term: term to start at
-def get_previous_class_schedule(driver, client, start_term=None):
+def get_previous_class_schedule(driver, client, start_term=None, specific_terms=None):
     driver.get(url)
     # wait for page to load
     WebDriverWait(driver, TIMEOUT).until(
@@ -184,8 +184,11 @@ def get_previous_class_schedule(driver, client, start_term=None):
     # get list of terms, levels and subjects
     # list of termcodes
     terms = [option.attrs['value'] for option in soup.find('select', {'name': 'sess'}).find_all('option')]
+
     if start_term is not None:
         terms = list(filter((lambda term: int(term) <= int(start_term)), terms)) 
+    elif specific_terms is not None:
+        terms = specific_terms
 
     # list of levels (undergrad or grad)
     levels = [option.attrs['value'] for option in soup.find('select', {'name': 'level'}).find_all('option')]

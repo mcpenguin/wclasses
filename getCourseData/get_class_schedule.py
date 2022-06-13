@@ -32,7 +32,7 @@ if __name__ == '__main__':
     try:
         CURRENT_TERM = get_default_term()
         LAST_TERM = get_last_term_code(CURRENT_TERM)
-        get_previous_class_schedule(driver, client, [LAST_TERM, CURRENT_TERM])
+        get_previous_class_schedule(driver, client, specific_terms=[LAST_TERM, CURRENT_TERM])
     finally:
         driver.close()
 
