@@ -24,9 +24,7 @@ interface ITime extends Document {
     days: Day[],
 }
 
-export default interface IClass extends Document {
-    subjectCode: string,
-    catalogNumber: string,
+export default interface IClass extends Document, ICourseCode {
     term: string,
     level: ["UG", "G"],
     dateUpdated: Date,

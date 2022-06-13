@@ -19,7 +19,6 @@ Promise<void> => {
 export const GetScheduleForCourseWithTermCode = async (req: Request, res: Response):
 Promise<void> => {
     try {
-        console.log(req.params);
         const classes: IClass[] = await Class.find({
             term: req.params.termCode,
             subjectCode: req.params.subjectCode,
