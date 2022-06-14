@@ -1,5 +1,6 @@
 import axios from "axios";
 import IUWFlowCourse from "../types/IUWFlowCourse";
+import IProfessor from "../types/IProfessor";
 
 export const UWFLOW_API_URL = "https://uwflow.com/graphql";
 
@@ -12,4 +13,14 @@ export const GetInfoForCourseFromUWFlow = async (subjectCode: string, catalogNum
     }
     const response = await axios.post(UWFLOW_API_URL, payload);
     return (response.data.data.course)[0];
+}
+
+export const GetInfoForProfessorFromUWFlow = async (firstName: string, lastName: string): Promise<IProfessor> => {
+    const payload = {
+        operationName: "getProf",
+        variables: {"code": `${firstName.toLowerCase()}_${lastName.toLowerCase()}`},
+        query: "query getProf($code: String) { prof(where: {code: {_eq: $code}}) { ...ProfInfo ...ProfCoursesTaught ...ProfRating __typename } }  fragment ProfInfo on prof { id name code __typename }  fragment ProfCoursesTaught on prof { id prof_courses { course { id code __typename } __typename } __typename }  fragment ProfRating on prof { id rating { liked clear engaging filled_count comment_count __typename } __typename } "
+    }
+    const response = await axios.post(UWFLOW_API_URL, payload);
+    return (response.data.data.prof)[0];
 }

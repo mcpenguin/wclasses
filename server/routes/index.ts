@@ -15,6 +15,7 @@ classes.GetTermsCourseWasOffered);
 router.get("/courses/schedule/:subjectCode/:catalogNumber", classes.GetScheduleForCourse);
 router.get("/courses/schedule/:subjectCode/:catalogNumber/:termCode", classes.GetScheduleForCourseWithTermCode);
 
+router.get("/professor/details/:firstName/:lastName", professor.GetInfoForProfessor);
 router.get("/professor/classesTaught/:firstName/:lastName", professor.GetClassesProfessorHasTaught);
 
 export default router;
