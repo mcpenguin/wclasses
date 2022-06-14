@@ -5,3 +5,8 @@ getCourseData/__pycache__
 
 server/node_modules
 server/dist
+
+web/node_modules
+web/build
+
+
