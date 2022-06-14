@@ -11,3 +11,12 @@ services:
     - "8000:8000"
     env_file:
     - ./server/.env
+
+  web:
+    build: ./web
+    command: npm start
+    volumes:
+    - .:/usr/app
+    - /usr/app/node_modules
+    ports:
+    - "3000:3000"
