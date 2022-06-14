@@ -7,22 +7,8 @@ Promise<void> => {
     try {
         const classes: IClass[] = await Class.find({
             subjectCode: req.params.subjectCode,
-            catalogNumber: req.params.catalogNumber
-        });
-        res.status(200).json({classes});
-    }
-    catch (err) {
-        throw err;
-    }
-}
-
-export const GetScheduleForCourseWithTermCode = async (req: Request, res: Response):
-Promise<void> => {
-    try {
-        const classes: IClass[] = await Class.find({
-            term: req.params.termCode,
-            subjectCode: req.params.subjectCode,
-            catalogNumber: req.params.catalogNumber
+            catalogNumber: req.params.catalogNumber,
+            ...(req.query.term == null ? {} : {term: req.query.term})
         });
         res.status(200).json({classes});
     }

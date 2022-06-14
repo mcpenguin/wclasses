@@ -19,7 +19,8 @@ export const GetClassesProfessorHasTaught = async (req: Request, res: Response):
 Promise<void> => {
 	try {
 		const classes: IClass[] = await Class.find({
-			"instructor": `${req.params.lastName},${req.params.firstName}`
+			"instructor": `${req.params.lastName},${req.params.firstName}`,
+			...(req.query.term == null ? {} : {term: req.query.term})
 		});
 		res.status(200).json({classes});
 	}
