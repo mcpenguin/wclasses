@@ -5,6 +5,8 @@ import IUWFlowCourse from "../../types/IUWFlowCourse"
 import { GetInfoForCourseFromUWFlow } from "../../helpers/uwflow"
 import ICourseWithUWFlowData from "../../types/ICourseWithUWFlowData"
 import splitCourse from "../../helpers/splitCourse"
+import { stringify } from "querystring"
+import Class from "../../models/Class"
 
 export const GetInfoForCourse = async (req: Request, res: Response):
 Promise<void> => {
@@ -41,5 +43,4 @@ Promise<void> => {
         throw err;
     }
 }
-
 
