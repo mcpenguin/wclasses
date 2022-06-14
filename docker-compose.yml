@@ -1,8 +1,13 @@
 version: "3.7"
 
 services:
-  getCourseData:
-    image: python:3
-    build: ./getCourseData
+  server:
+    build: ./server
+    command: npm start
+    volumes:
+    - .:/usr/app
+    - /usr/app/node_modules
+    ports:
+    - "8000:8000"
     env_file:
-    - .env
+    - ./server/.env
