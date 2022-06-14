@@ -22,6 +22,7 @@
 
 ## Running API
 
+### Running Locally
 1. Run `cd server`
 
 2. Run `npm install`
@@ -29,6 +30,14 @@
 3. Run `npm run build && npm start`
 
 4. The API will be hosted on `localhost:8000`
+
+### Running on Docker
+
+1. Download Docker and Docker Compose
+
+2. Run `docker-compose up`
+
+3. The API will be hosted on `localhost:8000`
 
 
 
