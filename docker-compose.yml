@@ -12,9 +12,9 @@ services:
     env_file:
     - ./server/.env
 
-  web:
-    build: ./web
-    command: npm start
+  www:
+    build: ./www
+    command: npm run dev
     volumes:
     - .:/usr/app
     - /usr/app/node_modules
