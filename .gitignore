@@ -3,10 +3,8 @@ getCourseData/geckodriver
 geckodriver.log
 getCourseData/__pycache__
 
-server/node_modules
-server/dist
+node_modules
 
-www/node_modules
-www/.next
+src/.next
 
 
