@@ -1,104 +1,68 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import Link from 'next/link'
+
 import styles from './Schedule.module.scss'
 
-import ICourse from '@server/types/ICourse'
+import ICourseWithUWFlowData from '@server/types/ICourseWithUWFlowData'
 import ICourseCode from '@server/types/ICourseCode'
-
-// export async function getStaticPaths() {
-//   const response = await fetch('http://localhost:8000/courses');
-//   const courseCodes: ICourseCode[] = await response.json();
-
-//   const paths = courseCodes.map(c => ({
-//     params: {
-//       subjectCode: c.subjectCode,
-//       catalogNumber: c.catalogNumber,
-//     }
-//   }))
-
-//   return {
-//     paths: paths,
-//     fallback: false,
-//   }
-// }
 
 // This function gets called at build time on server-side
 export async function getServerSideProps(context: any) {
   const {subjectCode, catalogNumber} = context.params;
 
   const response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}/`);
-  const data = await response.json();
+  const courseDetails: ICourseCode[] = await response.json();
 
   return {
-    props: {data},
+    props: {
+      courseDetails
+    },
   }
 }
 
 const Schedule: NextPage = (props: any) => {
 
-  let data: ICourse = props.data;
+  let courseDetails: ICourseWithUWFlowData = props.courseDetails;
+  let courseName: string = `${courseDetails.subjectCode} ${courseDetails.catalogNumber}`
+
+  let corequisitesAsLinks = courseDetails.corequisites
+    ?.map(c => <p>
+      <Link href={`/schedule/${c.subjectCode}/${c.catalogNumber}`}>
+        <a>{c.subjectCode} {c.catalogNumber} - {courseDetails.title}</a>
+      </Link>
+    </p>)
+
+  let antirequisitesAsLinks = courseDetails.antirequisites
+  ?.map(c => <p>
+    <Link href={`/schedule/${c.subjectCode}/${c.catalogNumber}`}>
+      <a>{c.subjectCode} {c.catalogNumber} - {courseDetails.title}</a>
+    </Link>
+  </p>)
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>{data.subjectCode} {data.catalogNumber}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{courseName}</title>
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>{courseName}</h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
+          {courseDetails.description}
         </p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <h3>Prerequisites</h3>
+        <p>{courseDetails.prerequisitesAsString}</p>
+        
+        <h3>Corequisites</h3>
+        {corequisitesAsLinks}
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <h3>Antirequisites</h3>
+        {antirequisitesAsLinks}
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }
