@@ -7,16 +7,23 @@ import styles from './Schedule.module.scss'
 import ICourseWithUWFlowData from '@server/types/ICourseWithUWFlowData'
 import ICourseCode from '@server/types/ICourseCode'
 
+import { parseTermCode } from '../../../../helpers/termcode'
+
 // This function gets called at build time on server-side
 export async function getServerSideProps(context: any) {
   const {subjectCode, catalogNumber} = context.params;
+  let response = null;
 
-  const response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}/`);
+  response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}/`);
   const courseDetails: ICourseCode[] = await response.json();
+
+  response = await fetch(`http://localhost:8000/courses/termOfferings/${subjectCode}/${catalogNumber}/`);
+  const termOfferingsDetails: ICourseCode[] = await response.json();
 
   return {
     props: {
-      courseDetails
+      courseDetails,
+      termOfferingsDetails,
     },
   }
 }
@@ -24,7 +31,7 @@ export async function getServerSideProps(context: any) {
 const Schedule: NextPage = (props: any) => {
 
   let courseDetails: ICourseWithUWFlowData = props.courseDetails;
-  let courseName: string = `${courseDetails.subjectCode} ${courseDetails.catalogNumber}`
+  let courseName: string = `${courseDetails.subjectCode} ${courseDetails.catalogNumber} - ${courseDetails.title}`
 
   let corequisitesAsLinks = courseDetails.corequisites
     ?.map(c => <p>
@@ -39,6 +46,11 @@ const Schedule: NextPage = (props: any) => {
       <a>{c.subjectCode} {c.catalogNumber} - {courseDetails.title}</a>
     </Link>
   </p>)
+
+  let termOfferingsDetails: string[] = props.termOfferingsDetails;
+
+  let termCodesAsElements = termOfferingsDetails
+    .map(t => <li>{parseTermCode(t)}</li>);
 
   return (
     <div className={styles.container}>
@@ -61,6 +73,11 @@ const Schedule: NextPage = (props: any) => {
 
         <h3>Antirequisites</h3>
         {antirequisitesAsLinks}
+
+        <h3>Terms Offered in the Past</h3>
+        <ul>
+          {termCodesAsElements}
+        </ul>
 
       </main>
     </div>

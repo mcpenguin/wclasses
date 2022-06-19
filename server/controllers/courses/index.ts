@@ -30,22 +30,22 @@ Promise<void> => {
         });
         const dataAboutCourseFromDBAsObject = dataAboutCourseFromDB?.toObject();
 
-        const dataAboutCourseFromUWFlow: IUWFlowCourse = await GetInfoForCourseFromUWFlow(req.params.subjectCode, req.params.catalogNumber);
+        const dataAboutCourseFromUWFlow: null | IUWFlowCourse = await GetInfoForCourseFromUWFlow(req.params.subjectCode, req.params.catalogNumber);
 
         // coreqs/antireqs are in the form "A, B, C, D." or "A, B, C"
         const dataAboutCourse = {
             ...dataAboutCourseFromDBAsObject,
-            prerequisitesAsString: dataAboutCourseFromUWFlow.prereqs,
-            corequisites: dataAboutCourseFromUWFlow.coreqs
+            prerequisitesAsString: dataAboutCourseFromUWFlow?.prereqs,
+            corequisites: dataAboutCourseFromUWFlow?.coreqs
                 ?.replace(".", "") 
                 .split(",")      
                 .map(coreq => splitCourse(coreq)),
-            antirequisites: dataAboutCourseFromUWFlow.antireqs
+            antirequisites: dataAboutCourseFromUWFlow?.antireqs
                 ?.split(", ")
                 .map(antireq => splitCourse(antireq)),
-            postrequisites: dataAboutCourseFromUWFlow.postrequisites
+            postrequisites: dataAboutCourseFromUWFlow?.postrequisites
                 ?.map(postreq => splitCourse(postreq.postrequisite.code)),
-            ...dataAboutCourseFromUWFlow.rating
+            ...dataAboutCourseFromUWFlow?.rating
         }
 
         res.status(200).json(dataAboutCourse);
