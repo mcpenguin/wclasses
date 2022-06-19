@@ -4,10 +4,30 @@ import Image from 'next/image'
 import styles from './Schedule.module.scss'
 
 import ICourse from '@server/types/ICourse'
+import ICourseCode from '@server/types/ICourseCode'
+
+// export async function getStaticPaths() {
+//   const response = await fetch('http://localhost:8000/courses');
+//   const courseCodes: ICourseCode[] = await response.json();
+
+//   const paths = courseCodes.map(c => ({
+//     params: {
+//       subjectCode: c.subjectCode,
+//       catalogNumber: c.catalogNumber,
+//     }
+//   }))
+
+//   return {
+//     paths: paths,
+//     fallback: false,
+//   }
+// }
 
 // This function gets called at build time on server-side
-export async function getStaticProps() {
-  const response = await fetch('http://localhost:8000/courses/details/MATH/135/');
+export async function getServerSideProps(context: any) {
+  const {subjectCode, catalogNumber} = context.params;
+
+  const response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}/`);
   const data = await response.json();
 
   return {
@@ -18,12 +38,11 @@ export async function getStaticProps() {
 const Schedule: NextPage = (props: any) => {
 
   let data: ICourse = props.data;
-  console.log(data);
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Class Schedule</title>
+        <title>{data.subjectCode} {data.catalogNumber}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

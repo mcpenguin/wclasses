@@ -6,6 +6,8 @@ import * as professor from "../controllers/professor";
 
 const router: Router = Router();
 
+router.get("/courses/", courses.GetAllCourseCodes);
+
 router.get("/courses/details/:subjectCode/:catalogNumber", 
 courses.GetInfoForCourse);
 

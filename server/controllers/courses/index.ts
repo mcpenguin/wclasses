@@ -3,10 +3,23 @@ import Course from "../../models/Course"
 import ICourse from "../../types/ICourse"
 import IUWFlowCourse from "../../types/IUWFlowCourse"
 import { GetInfoForCourseFromUWFlow } from "../../helpers/uwflow"
-import ICourseWithUWFlowData from "../../types/ICourseWithUWFlowData"
 import splitCourse from "../../helpers/splitCourse"
-import { stringify } from "querystring"
 import Class from "../../models/Class"
+import ICourseCode from "../../types/ICourseCode"
+
+export const GetAllCourseCodes = async (req: Request, res: Response):
+Promise<void> => {
+    try {
+        const courses: ICourse[] = await Course.find();
+        res.status(200).json(courses.map(courseCode => {return {
+            subjectCode: courseCode.subjectCode, 
+            catalogNumber: courseCode.catalogNumber}})
+        )
+    }
+    catch (err) {
+        throw err
+    }
+}
 
 export const GetInfoForCourse = async (req: Request, res: Response):
 Promise<void> => {
