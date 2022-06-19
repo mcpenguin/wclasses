@@ -8,7 +8,7 @@ export const GetInfoForProfessor = async (req: Request, res: Response):
 Promise<void> => {
 	try {
 		const dataAboutProfessor: IProfessor = await GetInfoForProfessorFromUWFlow(req.params.firstName, req.params.lastName);
-		res.status(200).json({data: dataAboutProfessor});
+		res.status(200).json(dataAboutProfessor);
 	}
 	catch (err) {
 		throw err;
@@ -22,7 +22,7 @@ Promise<void> => {
 			"instructor": `${req.params.lastName},${req.params.firstName}`,
 			...(req.query.term == null ? {} : {term: req.query.term})
 		});
-		res.status(200).json({classes});
+		res.status(200).json(classes);
 	}
 	catch (err) {
 		throw err;

@@ -10,7 +10,7 @@ Promise<void> => {
             catalogNumber: req.params.catalogNumber,
             ...(req.query.term == null ? {} : {term: req.query.term})
         });
-        res.status(200).json({classes});
+        res.status(200).json(classes);
     }
     catch (err) {
         throw err;
@@ -28,7 +28,7 @@ Promise<void> => {
             .filter(c => c.enrolTotal != 0)
             .map(c => c.term);
         let uniqueTerms: string[] = [...new Set(terms)];
-        res.status(200).json({terms: uniqueTerms});
+        res.status(200).json(uniqueTerms);
     }
     catch (err) {
         throw err;

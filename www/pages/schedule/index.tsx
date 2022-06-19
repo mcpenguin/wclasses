@@ -1,9 +1,24 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from './index.module.scss'
+import styles from './Schedule.module.scss'
 
-const Home: NextPage = (props) => {
+import ICourse from '@server/types/ICourse'
+
+// This function gets called at build time on server-side
+export async function getStaticProps() {
+  const response = await fetch('http://localhost:8000/courses/details/MATH/135/');
+  const data = await response.json();
+
+  return {
+    props: {data},
+  }
+}
+
+const Schedule: NextPage = (props: any) => {
+
+  let data: ICourse = props.data;
+  console.log(data);
 
   return (
     <div className={styles.container}>
@@ -69,14 +84,4 @@ const Home: NextPage = (props) => {
   )
 }
 
-// This function gets called at build time on server-side
-export async function getStaticProps() {
-  const response = await fetch('http://localhost:8000/courses/details/MATH/135/');
-  const data = await response.json();
-
-  return {
-    props: {data},
-  }
-}
-
-export default Home
+export default Schedule;

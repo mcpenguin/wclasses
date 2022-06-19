@@ -35,9 +35,7 @@ Promise<void> => {
             ...dataAboutCourseFromUWFlow.rating
         }
 
-        res.status(200).json({
-            data: dataAboutCourse,
-        });
+        res.status(200).json(dataAboutCourse);
     }
     catch (err) {
         throw err;
