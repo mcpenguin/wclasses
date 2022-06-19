@@ -4,7 +4,9 @@ geckodriver.log
 getCourseData/__pycache__
 
 node_modules
+dist
+server/dist
 
-src/.next
+www/.next
 
 
