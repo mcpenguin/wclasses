@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 import ICourse from './ICourse';
 import ICourseCode from "./ICourseCode";
 
-export default interface ICourseWithUWFlowData extends ICourse, Document {
+export default interface ICourseWithUWFlowData extends ICourse {
     prerequisitesAsString?: string,
     corequisites?: ICourseCode[],
     antirequisites?: ICourseCode[],

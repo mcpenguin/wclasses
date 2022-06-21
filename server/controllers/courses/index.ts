@@ -4,8 +4,28 @@ import ICourse from "../../types/ICourse"
 import IUWFlowCourse from "../../types/IUWFlowCourse"
 import { GetInfoForCourseFromUWFlow } from "../../helpers/uwflow"
 import splitCourse from "../../helpers/splitCourse"
-import Class from "../../models/Class"
-import ICourseCode from "../../types/ICourseCode"
+import ICourseWithUWFlowData from "../../types/ICourseWithUWFlowData"
+
+const AddUWFlowInfoToCourseFromDB = async (course: ICourse): Promise<any> => {
+    const dataAboutCourseFromUWFlow: IUWFlowCourse = await GetInfoForCourseFromUWFlow(course.subjectCode, course.catalogNumber);
+
+    // coreqs/antireqs are in the form "A, B, C, D." or "A, B, C"
+    const dataAboutCourse = {
+        ...course,
+        prerequisitesAsString: dataAboutCourseFromUWFlow?.prereqs,
+        corequisites: dataAboutCourseFromUWFlow?.coreqs
+            ?.replace(".", "") 
+            .split(",")      
+            .map(coreq => splitCourse(coreq)),
+        antirequisites: dataAboutCourseFromUWFlow?.antireqs
+            ?.split(", ")
+            .map(antireq => splitCourse(antireq)),
+        postrequisites: dataAboutCourseFromUWFlow?.postrequisites
+            ?.map(postreq => splitCourse(postreq.postrequisite.code)),
+        ...dataAboutCourseFromUWFlow?.rating
+    }
+    return dataAboutCourse;
+}
 
 export const GetAllCourseCodes = async (req: Request, res: Response):
 Promise<void> => {
@@ -28,27 +48,11 @@ Promise<void> => {
             "subjectCode": req.params.subjectCode,
             "catalogNumber": req.params.catalogNumber
         });
-        const dataAboutCourseFromDBAsObject = dataAboutCourseFromDB?.toObject();
+        const course: ICourseWithUWFlowData = await AddUWFlowInfoToCourseFromDB(
+            dataAboutCourseFromDB!.toObject()
+        );
 
-        const dataAboutCourseFromUWFlow: null | IUWFlowCourse = await GetInfoForCourseFromUWFlow(req.params.subjectCode, req.params.catalogNumber);
-
-        // coreqs/antireqs are in the form "A, B, C, D." or "A, B, C"
-        const dataAboutCourse = {
-            ...dataAboutCourseFromDBAsObject,
-            prerequisitesAsString: dataAboutCourseFromUWFlow?.prereqs,
-            corequisites: dataAboutCourseFromUWFlow?.coreqs
-                ?.replace(".", "") 
-                .split(",")      
-                .map(coreq => splitCourse(coreq)),
-            antirequisites: dataAboutCourseFromUWFlow?.antireqs
-                ?.split(", ")
-                .map(antireq => splitCourse(antireq)),
-            postrequisites: dataAboutCourseFromUWFlow?.postrequisites
-                ?.map(postreq => splitCourse(postreq.postrequisite.code)),
-            ...dataAboutCourseFromUWFlow?.rating
-        }
-
-        res.status(200).json(dataAboutCourse);
+        res.status(200).json(course);
     }
     catch (err) {
         throw err;

@@ -5,19 +5,19 @@ import Link from 'next/link'
 import styles from './Schedule.module.scss'
 
 import ICourseWithUWFlowData from '@server/types/ICourseWithUWFlowData'
-// import ICourse from '../../../../../server/types/ICourse'
+import ICourse from '@server/types/ICourse'
 import ICourseCode from '@server/types/ICourseCode'
 
 import { parseTermCode } from '../../../../helpers/termcode'
 
-const GetCourse = async (course: ICourseCode) => {
+const GetCourse = async (course: ICourseCode): Promise<ICourse> => {
   const { subjectCode, catalogNumber } = course;
   let response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}`)
-  let c = await response.json();
+  let c: Promise<ICourse> = response.json();
   return c;
 }
 
-const TurnICourseIntoLink = (c: any) => {
+const TurnICourseIntoLink = (c: ICourse): any => {
   return <p>
     <Link href={`/schedule/${c.subjectCode}/${c.catalogNumber}`}>
       <a>
@@ -37,16 +37,21 @@ export async function getServerSideProps(context: any) {
   const courseDetails = await response.json();
 
   response = await fetch(`http://localhost:8000/courses/termOfferings/${subjectCode.toUpperCase()}/${catalogNumber.toUpperCase()}/`);
-  const termOfferingsDetails: ICourseCode[] = await response.json();
+  const termOfferingsDetails: string[] = await response.json();
 
-  let corequisites = courseDetails.corequisites
-    ?.map(c => await GetCourse(c))
+  let corequisitesAsCodes: ICourseCode[] = courseDetails.corequisites;
+  let corequisites = corequisitesAsCodes
+    ?.map(async c => await GetCourse(c))
 
-  let antirequisites = courseDetails.antirequisites
-    ?.map(c => await GetCourse(c))
+  let antirequisitesAsCodes: ICourseCode[] = courseDetails.antirequisites;
+  console.log(antirequisitesAsCodes);
+  let antirequisites = antirequisitesAsCodes
+    ?.map(async c => await GetCourse(c))
+  console.log(antirequisites);
 
-  let postrequisites = courseDetails.postrequisites
-    ?.map(c => await GetCourse(c))
+  let postrequisitesAsCodes: ICourseCode[] = courseDetails.postrequisites;
+  let postrequisites = postrequisitesAsCodes
+    ?.map(async c => await GetCourse(c))
 
   return {
     props: {
