@@ -12,11 +12,11 @@ services:
     env_file:
     - ./server/.env
 
-  www:
-    build: ./www
-    command: npm run dev
-    volumes:
-    - .:/usr/app
-    - /usr/app/node_modules
-    ports:
-    - "3000:3000"
+  # www:
+  #   build: ./www
+  #   command: npm run dev
+  #   volumes:
+  #   - .:/usr/app
+  #   - /usr/app/node_modules
+  #   ports:
+  #   - "3000:3000"
