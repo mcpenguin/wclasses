@@ -9,15 +9,19 @@ import ICourse from '@server/types/ICourse'
 import ICourseCode from '@server/types/ICourseCode'
 
 import { parseTermCode } from '../../../../helpers/termcode'
+import axios from 'axios'
 
-const GetCourse = async (course: ICourseCode): Promise<ICourse> => {
-  const { subjectCode, catalogNumber } = course;
-  let response = await fetch(`http://localhost:8000/courses/details/${subjectCode}/${catalogNumber}`)
-  let c: Promise<ICourse> = response.json();
-  return c;
+const GetCourses = async (courses: ICourseCode[]): Promise<ICourseWithUWFlowData[]> => {
+  console.log(courses);
+  let response = axios.get(`http://localhost:8000/courses/details`, {
+    params: {courses: courses}
+  });
+  let result: ICourseWithUWFlowData[] = (await response).data;
+  console.log("result: ", result);
+  return result;
 }
 
-const TurnICourseIntoLink = (c: ICourse): any => {
+const TurnICourseIntoLink = (c: ICourseWithUWFlowData): any => {
   return <p>
     <Link href={`/schedule/${c.subjectCode}/${c.catalogNumber}`}>
       <a>
@@ -31,35 +35,41 @@ const TurnICourseIntoLink = (c: ICourse): any => {
 export async function getServerSideProps(context: any) {
   const subjectCode: string = context.params.subjectCode;
   const catalogNumber: string = context.params.catalogNumber;
-  let response = null;
 
-  response = await fetch(`http://localhost:8000/courses/details/${subjectCode.toUpperCase()}/${catalogNumber.toUpperCase()}/`);
-  const courseDetails = await response.json();
+  let coursesResponse = await GetCourses([{
+    subjectCode: subjectCode.toUpperCase(),
+    catalogNumber: catalogNumber.toUpperCase()
+  }]);
+  const courseDetails = (await coursesResponse)[0];
 
-  response = await fetch(`http://localhost:8000/courses/termOfferings/${subjectCode.toUpperCase()}/${catalogNumber.toUpperCase()}/`);
-  const termOfferingsDetails: string[] = await response.json();
+  let termOfferingsResponse = await axios.get(`http://localhost:8000/courses/termOfferings/${subjectCode.toUpperCase()}/${catalogNumber.toUpperCase()}/`);
+  const termOfferingsDetails: string[] = (await termOfferingsResponse).data;
 
-  let corequisitesAsCodes: ICourseCode[] = courseDetails.corequisites;
-  let corequisites = corequisitesAsCodes
-    ?.map(async c => await GetCourse(c))
+  let corequisitesAsCodes: undefined | ICourseCode[] = courseDetails.corequisites;
+  let corequisites: ICourseWithUWFlowData[] = [];
+  if (corequisitesAsCodes) {
+    corequisites = await GetCourses(corequisitesAsCodes);
+  }
 
-  let antirequisitesAsCodes: ICourseCode[] = courseDetails.antirequisites;
-  console.log(antirequisitesAsCodes);
-  let antirequisites = antirequisitesAsCodes
-    ?.map(async c => await GetCourse(c))
-  console.log(antirequisites);
+  let antirequisitesAsCodes: undefined | ICourseCode[] = courseDetails.antirequisites;
+  let antirequisites: ICourseWithUWFlowData[] = [];
+  if (antirequisitesAsCodes) {
+    antirequisites = await GetCourses(antirequisitesAsCodes);
+  }
 
-  let postrequisitesAsCodes: ICourseCode[] = courseDetails.postrequisites;
-  let postrequisites = postrequisitesAsCodes
-    ?.map(async c => await GetCourse(c))
+  let postrequisitesAsCodes: undefined | ICourseCode[] = courseDetails.postrequisites;
+  let postrequisites: ICourseWithUWFlowData[] = [];
+  if (postrequisitesAsCodes) {
+    postrequisites = await GetCourses(postrequisitesAsCodes);
+  }
 
   return {
     props: {
       courseDetails,
       termOfferingsDetails,
-      corequisites: [corequisites ?? [null]][0],
-      antirequisites: [antirequisites ?? [null]][0],
-      postrequisites: [postrequisites ?? [null]]
+      corequisites,
+      antirequisites,
+      postrequisites
     },
   }
 }

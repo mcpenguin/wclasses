@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 # Copy both package.json and package-lock.json
 COPY package*.json ./
+COPY tsconfig.json ./
 
 RUN npm install \
   && npm install typescript --global \
