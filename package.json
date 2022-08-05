@@ -1,0 +1,22 @@
+{
+  "name": "wclasses",
+  "version": "1.0.0",
+  "description": "## Development",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "docker-compose up -d",
+    "logs": "docker-compose logs --follow",
+    "stop": "docker-compose down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcpenguin/wclasses.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcpenguin/wclasses/issues"
+  },
+  "homepage": "https://github.com/mcpenguin/wclasses#readme"
+}

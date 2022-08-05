@@ -8,7 +8,7 @@ import ICourseWithUWFlowData from '@server/types/ICourseWithUWFlowData'
 import ICourse from '@server/types/ICourse'
 import ICourseCode from '@server/types/ICourseCode'
 
-import { parseTermCode } from '../../../../helpers/termcode'
+import { parseTermCode } from '../../../helpers/termcode'
 import axios from 'axios'
 
 const GetCourses = async (courses: ICourseCode[]): Promise<ICourseWithUWFlowData[]> => {
