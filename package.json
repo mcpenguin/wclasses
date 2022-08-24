@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "## Development",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "docker-compose up -d",
     "logs": "docker-compose logs --follow",
     "stop": "docker-compose down",
+    "server:run": "cd server && npm run dev",
+    "www:run": "cd www & npm run dev",
     "lint": "cd www && npm run lint && cd ../server && npm run lint"
   },
   "repository": {
