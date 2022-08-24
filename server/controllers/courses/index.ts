@@ -55,7 +55,6 @@ export const GetInfoForCourses = async (req: Request, res: Response):
     Promise<void> => {
     const courses = req.body.courses as unknown as ICourseCode[];
     try {
-        console.log("courses: " + courses);
         const dataAboutCoursesFromDB: null | ICourse[] = await Course.find({
             $or: courses
         });
