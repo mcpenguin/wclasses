@@ -7,7 +7,8 @@
   "scripts": {
     "start": "docker-compose up -d",
     "logs": "docker-compose logs --follow",
-    "stop": "docker-compose down"
+    "stop": "docker-compose down",
+    "lint": "cd www && npm run lint && cd ../server && npm run lint"
   },
   "repository": {
     "type": "git",

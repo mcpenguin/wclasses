@@ -83,7 +83,7 @@ const Schedule: NextPage = (props: any) => {
   let termOfferingsDetails: string[] = props.termOfferingsDetails;
 
   let termCodesAsElements = termOfferingsDetails
-    .map(t => <li>{parseTermCode(t)}</li>);
+    .map(t => <li key={t}>{parseTermCode(t)}</li>);
 
   let corequisites = props.corequisites;
   let corequisitesAsLinks = corequisites.map(TurnICourseIntoLink)
