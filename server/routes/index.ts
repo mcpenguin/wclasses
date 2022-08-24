@@ -1,22 +1,22 @@
-import { Router } from "express"
+import { Router } from 'express'
 
-import * as classes from "../controllers/classes";
-import * as courses from "../controllers/courses";
-import * as professor from "../controllers/professor";
+import * as classes from '../controllers/classes'
+import * as courses from '../controllers/courses'
+import * as professor from '../controllers/professor'
 
-const router: Router = Router();
+const router: Router = Router()
 
-router.get("/courses", courses.GetAllCourseCodes);
+router.get('/courses', courses.GetAllCourseCodes)
 
-router.get("/courses/details", 
-courses.GetInfoForCourses);
+router.get('/courses/details',
+  courses.GetInfoForCourses)
 
 router.get('/courses/termOfferings/:subjectCode/:catalogNumber',
-classes.GetTermsCourseWasOffered);
+  classes.GetTermsCourseWasOffered)
 
-router.get("/courses/schedule/:subjectCode/:catalogNumber", classes.GetScheduleForCourse);
+router.get('/courses/schedule/:subjectCode/:catalogNumber', classes.GetScheduleForCourse)
 
-router.get("/professor/details/:firstName/:lastName", professor.GetInfoForProfessor);
-router.get("/professor/classesTaught/:firstName/:lastName", professor.GetClassesProfessorHasTaught);
+router.get('/professor/details/:firstName/:lastName', professor.GetInfoForProfessor)
+router.get('/professor/classesTaught/:firstName/:lastName', professor.GetClassesProfessorHasTaught)
 
-export default router;
+export default router

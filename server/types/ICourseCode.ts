@@ -1,4 +1,4 @@
 export default interface ICourseCode {
-    subjectCode: string,
-    catalogNumber: string,
+  subjectCode: string
+  catalogNumber: string
 }

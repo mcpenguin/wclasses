@@ -1,10 +1,10 @@
 export default interface IProfessor {
-  name: string,
+  name: string
   rating: {
-    liked: number,
-    clear: number,
-    engaging: number,
-    filled_count: number,
-    comment_count: number,  
+    liked: number
+    clear: number
+    engaging: number
+    filled_count: number
+    comment_count: number
   }
 }
