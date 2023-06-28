@@ -15,12 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@server/*": [
-        "../server/*"
-      ],
-      "@helpers/*": [
-        "./helpers/*"
-      ]
+      "@interfaces/*": ["./interfaces/*"],
+      "@helpers/*": ["./helpers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

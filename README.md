@@ -43,8 +43,6 @@
 
 MongoDB runs really slowly if we are using it in Next.js directly instead of a separate service, so we need to separate the API and front end layers.
 
-Run locally first - right now, `www` uses models from `server`, and currently, the way things are configured, the 
-
 ### TODO
 - Add `concurrently` to run server and www together, add `tsc-watch` to server
 - Set dockerfile + docker compose to run the server and www IN THE SAME CONTAINER rather than separately so we can reuse types

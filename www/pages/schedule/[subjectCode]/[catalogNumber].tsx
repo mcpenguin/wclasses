@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import styles from "./Schedule.module.scss";
 
-import ICourseWithUWFlowData from "@server/types/ICourseWithUWFlowData";
-import ICourse from "@server/types/ICourse";
-import ICourseCode from "@server/types/ICourseCode";
+import ICourseWithUWFlowData from "@interfaces/ICourseWithUWFlowData";
+import ICourse from "@interfaces/ICourse";
+import ICourseCode from "@interfaces/ICourseCode";
 
 import { parseTermCode } from "../../../helpers/termcode";
 import axios from "axios";
