@@ -1,33 +1,16 @@
 import clientPromise from "@lib/mongodb";
 import type { NextApiRequest, NextApiResponse } from 'next'
+import getCourseDetails from "@controllers/getCourseDetails";
 
 // Get course details based on subject code and catalog number
 // Query parameters:
 // 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-      const client = await clientPromise;
-      const db = client.db("waterloo");
-      const courses = db.collection("courses");
-
-      const subjectCode = req.query.subjectCode;
-      if (!subjectCode) {
-        res.status(500);
-        res.json({error: 'Please specify the subject code using in the query: subjectCode'})
-        return;
-      }
-      const catalogNumber = req.query.catalogNumber;
-      if (!catalogNumber) {
-        res.status(500);
-        res.json({error: 'Please specify the catalog number using in the query: catalogNumber'})
-      }
-
-      const result = await courses
-          .find({subjectCode, catalogNumber})
-          .toArray();
-      
-      res.status(200);
-      res.json(result);
+    const subjectCode = <string | undefined>req.query.subjectCode;
+    const catalogNumber = <string | undefined>req.query.catalogNumber;
+    const courses = await getCourseDetails(subjectCode, catalogNumber);
+    res.status(200).json(courses);
   } catch (e) {
       console.error(e);
   }

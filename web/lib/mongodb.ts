@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb'
+import { GetServerSideProps } from 'next'
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
@@ -30,6 +31,4 @@ if (process.env.NODE_ENV === 'development') {
   console.log('Connected to Mongo client')
 }
 
-// Export a module-scoped MongoClient promise. By doing this in a
-// separate module, the client can be shared across functions.
-export default clientPromise
+export default clientPromise;
