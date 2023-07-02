@@ -7,6 +7,8 @@ import getSchedule from "@controllers/getSchedule";
 import { Time } from "@utils/time";
 import { TermCode } from "@utils/termCode";
 
+import Schedule from "../../components/schedule";
+
 export default function Course({courseName, courseDetails, schedule}): InferGetServerSidePropsType<typeof getServerSideProps> {
   courseDetails = JSON.parse(courseDetails);
   schedule = JSON.parse(schedule);
@@ -21,15 +23,13 @@ export default function Course({courseName, courseDetails, schedule}): InferGetS
       <main>
         <h1 className="course-title">{courseName} - {courseDetails.title}</h1>
         <p>{courseDetails.description}</p>
-
-        <h2>Exam Schedule</h2>
         <h2>Offerings</h2>
         {
           Object.entries(schedule)
             .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
             .map(([termcode, data]) => <>
             <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
-            {createScheduleTable(data)}
+          <Schedule scheduleData={data} />
           </>)
         }
       </main>
@@ -57,50 +57,3 @@ export async function getServerSideProps(ctx: { query: any; }) {
     },
   };
 };
-
-function createScheduleTable(termScheduleData: any) {
-  const headers = <tr>
-    <th>Section</th>
-    <th>Class</th>
-    <th>Enrolled</th>
-    <th>Time</th>
-    <th>Days</th>
-    <th>Location</th>
-    <th>Instructor</th>
-  </tr>
-  const rows = termScheduleData.map((row: any) => {
-    let prof = ['',''];
-    if (row.instructor){
-      prof = row.instructor.split(',');
-    }
-    const profName = `${prof[1]} ${prof[0]}`;
-    let timeString;
-    let dayString;
-    if (row.time) {
-      timeString = `${new Time(row.time.startTime).toString()} - ${new Time(row.time.endTime).toString()} `;
-      dayString = row.time.days.join(',')
-    } else {
-      timeString = '';
-      dayString = '';
-    }
-    return (<tr>
-      <td>{row.section.type} {row.section.num}</td>
-      <td>{row.classNumber}</td>
-      <td>{row.enrolTotal}/{row.enrolCap}</td>
-      <td>{timeString}</td>
-      <td>{dayString}</td>
-      <td>{row.buildingCode} {row.roomNumber}</td>
-      <td>{profName}</td>
-    </tr>)
-  })
-  return (
-    <table>
-      <thead>
-        {headers}
-      </thead>
-      <tbody>
-        {rows}
-      </tbody>
-    </table>
-  )
-}

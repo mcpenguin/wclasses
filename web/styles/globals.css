@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+main {
+  justify-content: center;
+  margin: 40px 0 40px 5vw;
+  font-family: 'Roboto', sans-serif;
+}
+
 h1 {
   font-size: 3em;
 }

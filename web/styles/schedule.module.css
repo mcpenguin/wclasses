@@ -1,0 +1,20 @@
+.container {
+  text-align: left;
+  table-layout: auto;
+}
+
+.section, .classNumber, .enrolled, .day, .room {
+  width: 100px;
+}
+
+.time {
+  width: 150px;
+}
+
+.location {
+  width: 250px;
+}
+
+.prof {
+  width: 200px;
+}
