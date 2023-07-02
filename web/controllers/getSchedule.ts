@@ -13,8 +13,21 @@ export default async function(subjectCode?: string, catalogNumber?: string, term
     }
     const result = await classes
       .find(query)
+      .sort({
+        term: 1,
+        'section.type': 1,
+        'section.num': 1,
+      })
       .toArray();
-    return result;
+    // group the different sections by termcode
+    let sections = {};
+    for (const c of result) {
+      if (!sections[c.term]) {
+        sections[c.term] = [];
+      }
+      sections[c.term].push(c);
+    }
+    return sections;
   }
   catch (err) {
     throw err;
