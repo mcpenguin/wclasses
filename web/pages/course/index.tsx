@@ -5,6 +5,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import getCourseDetails from "@controllers/getCourseDetails";
 import getSchedule from "@controllers/getSchedule";
 import { Time } from "@utils/time";
+import { TermCode } from "@utils/termCode";
 
 export default function Course({courseName, courseDetails, schedule}): InferGetServerSidePropsType<typeof getServerSideProps> {
   courseDetails = JSON.parse(courseDetails);
@@ -23,8 +24,14 @@ export default function Course({courseName, courseDetails, schedule}): InferGetS
 
         <h2>Exam Schedule</h2>
         <h2>Offerings</h2>
-        <h3>Fall 2022</h3>
-        {createScheduleTable(schedule['1219'])}
+        {
+          Object.entries(schedule)
+            .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
+            .map(([termcode, data]) => <>
+            <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
+            {createScheduleTable(data)}
+          </>)
+        }
       </main>
     </div>
   );
