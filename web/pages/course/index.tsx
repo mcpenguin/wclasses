@@ -5,6 +5,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import getCourseDetails from "@controllers/getCourseDetails";
 
 export default function Course({courseName, courseDetails}): InferGetServerSidePropsType<typeof getServerSideProps> {
+  courseDetails = JSON.parse(courseDetails);
   return (
     <div className="container">
       <Head>
@@ -13,7 +14,11 @@ export default function Course({courseName, courseDetails}): InferGetServerSideP
       </Head>
 
       <main>
-        <h1 className="course-title">{courseName}</h1>
+        <h1 className="course-title">{courseName} - {courseDetails.title}</h1>
+        <p>{courseDetails.description}</p>
+
+        <h2>Exam Schedule</h2>
+        <h2>Offerings</h2>
       </main>
     </div>
   );

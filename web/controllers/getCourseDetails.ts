@@ -10,7 +10,6 @@ export default async function(subjectCode?: string, catalogNumber?: string): Pro
       ...(subjectCode ? {subjectCode} : {}),
       ...(catalogNumber ? {catalogNumber} : {})
     }
-    console.log(query)
     const result = await courses
         .find(query)
         .toArray();
