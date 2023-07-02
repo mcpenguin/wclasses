@@ -6,17 +6,14 @@ export default async function(subjectCode?: string, catalogNumber?: string): Pro
     const db = client.db("waterloo");
     const courses = db.collection("courses");
 
-    let query = {} as any;
-    if (typeof subjectCode === "undefined") {
-        query.subjectCode = subjectCode;
+    let query = {
+      ...(subjectCode ? {subjectCode} : {}),
+      ...(catalogNumber ? {catalogNumber} : {})
     }
-    if (typeof catalogNumber === "undefined") {
-        query.catalogNumber = catalogNumber;
-    }
+    console.log(query)
     const result = await courses
         .find(query)
         .toArray();
-    
     return result;
   } catch (e) {
     console.error(e);
