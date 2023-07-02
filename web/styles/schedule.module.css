@@ -1,6 +1,5 @@
 .container {
   text-align: left;
-  table-layout: auto;
 }
 
 .section, .classNumber, .enrolled, .day, .room {

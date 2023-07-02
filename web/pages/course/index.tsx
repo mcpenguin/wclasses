@@ -9,6 +9,8 @@ import { TermCode } from "@utils/termCode";
 
 import Schedule from "../../components/schedule";
 
+import styles from "@styles/course.module.css"
+
 export default function Course({courseName, courseDetails, schedule}): InferGetServerSidePropsType<typeof getServerSideProps> {
   courseDetails = JSON.parse(courseDetails);
   schedule = JSON.parse(schedule);
@@ -22,7 +24,7 @@ export default function Course({courseName, courseDetails, schedule}): InferGetS
 
       <main>
         <h1 className="course-title">{courseName} - {courseDetails.title}</h1>
-        <p>{courseDetails.description}</p>
+        <p className={styles.description}>{courseDetails.description}</p>
         <h2>Offerings</h2>
         {
           Object.entries(schedule)
