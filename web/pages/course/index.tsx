@@ -14,7 +14,6 @@ import styles from "@styles/course.module.css"
 export default function Course({courseName, courseDetails, schedule}): InferGetServerSidePropsType<typeof getServerSideProps> {
   courseDetails = JSON.parse(courseDetails);
   schedule = JSON.parse(schedule);
-  console.log(schedule['1219']);
   return (
     <div className="container">
       <Head>
