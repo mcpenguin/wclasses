@@ -1,0 +1,27 @@
+main {
+  justify-content: center;
+  margin: 40px 0 40px 5vw;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+p, li {
+  font-size: 1.2em;
+}
+
+th, td {
+  font-size: 1rem;
+  padding-bottom: 5px;
+}
