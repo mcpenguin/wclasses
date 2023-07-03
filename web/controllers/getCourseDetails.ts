@@ -1,18 +1,17 @@
-import clientPromise from "@lib/mongodb";
+import { TermCode } from "@utils/termCode";
+import { UW_API_LINK } from "../constants";
+
+const UW_API_KEY = process.env.UW_API_KEY;
 
 export default async function(subjectCode?: string, catalogNumber?: string): Promise<any> {
   try {
-    const client = await clientPromise;
-    const db = client.db("waterloo");
-    const courses = db.collection("courses");
-
-    let query = {
-      ...(subjectCode ? {subjectCode} : {}),
-      ...(catalogNumber ? {catalogNumber} : {})
-    }
-    const result = await courses
-        .find(query)
-        .toArray();
+    const courses = await fetch(`${UW_API_LINK}/Courses/${TermCode.getCurrentTermCode()}/${subjectCode}`, {
+      headers: {
+        'X-API-KEY': UW_API_KEY
+      }
+    })
+    const result = (await courses.json()).filter(c => c.catalogNumber == catalogNumber);
+    console.log(result);
     return result;
   } catch (e) {
     console.error(e);

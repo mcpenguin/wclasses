@@ -2,6 +2,7 @@ import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
 import type { InferGetServerSidePropsType } from 'next'
 import { getServerSideProps } from '@helpers/index'
+import CourseForm from '../components/courseForm'
 
 export default function Home({
   isConnected,
@@ -9,7 +10,7 @@ export default function Home({
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>WClasses</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -47,6 +48,7 @@ export default function Home({
         <p>
           Find my contact details and other projects here on my <a href="https://marcus-chan.me">personal website</a>
         </p>
+        <CourseForm />
       </main>
     </div>
   )

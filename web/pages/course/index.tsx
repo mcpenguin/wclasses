@@ -48,6 +48,11 @@ export async function getServerSideProps(ctx: { query: any; }) {
     };
   }
   const courseDetails = await getCourseDetails(subjectCode, catalogNumber);
+  if (!courseDetails) {
+    return {
+      notFound: true,
+    };
+  }
   const schedule = await getSchedule(subjectCode, catalogNumber, undefined) // get for all terms
 
   return {
