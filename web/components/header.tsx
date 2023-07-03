@@ -5,7 +5,7 @@ import styles from "@styles/header.module.css"
 
 export default function Header() {
   const router = useRouter()
-  const handleClick = (e) => {
+  const handleClick = (e: any) => {
       e.preventDefault()
       router.push("/")
   }

@@ -1,7 +1,7 @@
 import { Time } from "@utils/time";
 import styles from '@styles/schedule.module.css'
 
-export default function Schedule({ scheduleData }) {
+export default function Schedule({ scheduleData }: {scheduleData: any}) {
   const headers = <tr>
     <th>Section</th>
     <th>Class</th>

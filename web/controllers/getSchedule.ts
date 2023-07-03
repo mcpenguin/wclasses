@@ -6,7 +6,7 @@ export default async function(subjectCode?: string, catalogNumber?: string, term
     const db = client.db("waterloo");
     const classes = db.collection("classes");
 
-    let query = {
+    const query = {
       ...(subjectCode ? {subjectCode} : {}),
       ...(catalogNumber ? {catalogNumber} : {}),
       ...(term ? {term} : {})
@@ -20,7 +20,7 @@ export default async function(subjectCode?: string, catalogNumber?: string, term
       })
       .toArray();
     // group the different sections by termcode
-    let sections = {};
+    const sections: {[key: string]: any[]} = {}
     for (const c of result) {
       if (!sections[c.term]) {
         sections[c.term] = [];

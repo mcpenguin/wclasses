@@ -11,11 +11,12 @@ import Schedule from "../../components/schedule";
 
 import styles from "@styles/course.module.css"
 
-export default function Course({courseName, courseDetails, schedule}): InferGetServerSidePropsType<typeof getServerSideProps> {
-  courseDetails = JSON.parse(courseDetails);
-  schedule = JSON.parse(schedule);
+export default function Course(props: any) {
+  const courseDetails = JSON.parse(props.courseDetails);
+  const schedule = JSON.parse(props.schedule);
+  const courseName = props.courseName;
   return (
-    <div className="container">
+    <>
       <Head>
         <title>{courseName}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -34,7 +35,7 @@ export default function Course({courseName, courseDetails, schedule}): InferGetS
           </>)
         }
       </main>
-    </div>
+    </>
   );
 }
 
@@ -62,4 +63,4 @@ export async function getServerSideProps(ctx: { query: any; }) {
       schedule: JSON.stringify(schedule),
     },
   };
-};
+}
