@@ -5,8 +5,8 @@ import styles from "@styles/courseForm.module.css"
 
 export default function CourseForm() {
   const router = useRouter()
-  const [subjectCode, setSubjectCode] = useState()
-  const [catalogNumber, setCatalogNumber] = useState()
+  const [subjectCode, setSubjectCode] = useState("dummy")
+  const [catalogNumber, setCatalogNumber] = useState("dummy")
 
   const handleSubmit = (e: any) => {
       e.preventDefault()
