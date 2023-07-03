@@ -10,7 +10,7 @@ export default async function(subjectCode?: string, catalogNumber?: string): Pro
         'X-API-KEY': UW_API_KEY
       }
     })
-    const result = (await courses.json()).filter(c => c.catalogNumber == catalogNumber);
+    const result = (await courses.json()).filter(c => c.catalogNumber === catalogNumber);
     console.log(result);
     return result;
   } catch (e) {
