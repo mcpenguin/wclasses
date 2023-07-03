@@ -48,7 +48,7 @@ export async function getServerSideProps(ctx: { query: any; }) {
     };
   }
   const courseDetails = await getCourseDetails(subjectCode, catalogNumber);
-  if (!courseDetails) {
+  if (courseDetails.length === 0) {
     return {
       notFound: true,
     };
