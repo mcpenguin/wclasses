@@ -7,6 +7,7 @@
     "lint": "npx eslint **/*.tsx --fix"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.0.1",
     "mongodb": "^4.8.1",
     "next": "latest",
     "react": "^18.2.0",
