@@ -1,7 +1,8 @@
 import { Time } from "@utils/time";
 import styles from '@styles/schedule.module.css'
+import Class from "@models/Class";
 
-export default function Schedule({ scheduleData }: {scheduleData: any}) {
+export default function Schedule({ scheduleData }: {scheduleData: Class[]}) {
   const headers = <tr>
     <th>Section</th>
     <th>Class</th>
@@ -11,7 +12,7 @@ export default function Schedule({ scheduleData }: {scheduleData: any}) {
     <th>Location</th>
     <th>Instructor</th>
   </tr>
-  const rows = scheduleData.map((row: any) => {
+  const rows = scheduleData.map((row) => {
     try {
       let prof = ['',''];
       if (row.instructor){
