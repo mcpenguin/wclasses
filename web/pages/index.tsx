@@ -1,12 +1,8 @@
 import Head from 'next/head'
-import clientPromise from '../lib/mongodb'
-import type { InferGetServerSidePropsType } from 'next'
-import { getServerSideProps } from '@helpers/index'
 import CourseForm from '../components/courseForm'
+import ProfForm from '@components/profForm'
 
-export default function Home({
-  isConnected,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home() {
   return (
     <div className="container">
       <Head>
@@ -49,6 +45,7 @@ export default function Home({
           Find my contact details and other projects here on my <a href="https://marcus-chan.me">personal website</a>
         </p>
         <CourseForm />
+        <ProfForm />
       </main>
     </div>
   )

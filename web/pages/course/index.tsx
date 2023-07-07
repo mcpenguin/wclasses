@@ -1,19 +1,17 @@
 import Head from "next/head";
-import { useSearchParams } from "next/navigation";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import getCourseDetails from "@controllers/getCourseDetails";
 import getSchedule from "@controllers/getSchedule";
-import { Time } from "@utils/time";
 import { TermCode } from "@utils/termCode";
 
-import Schedule from "../../components/schedule";
-
+import Schedule from "@components/schedule";
 import styles from "@styles/course.module.css"
+import Course from "@models/Course";
+import Class from "@models/Class";
 
-export default function Course(props: any) {
-  const courseDetails = JSON.parse(props.courseDetails);
-  const schedule = JSON.parse(props.schedule);
+export default function CoursePage(props: any) {
+  const courseDetails: Course = JSON.parse(props.courseDetails);
+  const schedule: { [key: string]: Class[] } = JSON.parse(props.schedule);
   const courseName = props.courseName;
   return (
     <>
@@ -30,8 +28,8 @@ export default function Course(props: any) {
           Object.entries(schedule)
             .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
             .map(([termcode, data]) => <>
-            <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
-          <Schedule scheduleData={data} />
+              <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
+              <Schedule scheduleData={data} />
           </>)
         }
       </main>
@@ -39,7 +37,7 @@ export default function Course(props: any) {
   );
 }
 
-export async function getServerSideProps(ctx: { query: any; }) {
+export async function getServerSideProps(ctx: { query: {subjectCode: string, catalogNumber: string} }) {
   const { query } = ctx;
   const subjectCode = query['subjectCode'];
   const catalogNumber = query['catalogNumber'];
@@ -49,7 +47,7 @@ export async function getServerSideProps(ctx: { query: any; }) {
     };
   }
   const courseDetails = await getCourseDetails(subjectCode, catalogNumber);
-  if (courseDetails.length === 0) {
+  if (!courseDetails || courseDetails.length === 0) {
     return {
       notFound: true,
     };
