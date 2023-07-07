@@ -17,8 +17,8 @@
     "paths": {
       "@lib/*": ["./lib/*"],
       "@styles/*": ["./styles/*"],
-      "@helpers/*": ["./helpers/*"],
       "@utils/*": ["./utils/*"],
+      "@models/*": ["./models/*"],
       "@controllers/*": ["./controllers/*"],
     }
   },
