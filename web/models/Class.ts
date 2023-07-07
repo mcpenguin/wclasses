@@ -3,7 +3,7 @@
 enum Day { 'M', 'T', 'W', 'Th', 'F', 'Sa', 'Su' };
 
 interface Section {
-  interface: string
+  type: string
   num: string
 }
 

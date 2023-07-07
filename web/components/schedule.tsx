@@ -19,17 +19,18 @@ export default function Schedule({ scheduleData }: {scheduleData: Class[]}) {
         prof = row.instructor.split(',');
       }
       const profName = `${prof[1]} ${prof[0]}`;
-      let timeString;
-      let dayString;
+      let timeString = ''
+      let dayString = ''
       if (row.time) {
         timeString = `${new Time(row.time.startTime).toString()} - ${new Time(row.time.endTime).toString()} `;
         dayString = row.time.days.join(',')
-      } else {
-        timeString = '';
-        dayString = '';
+      }
+      let sectionString = ''
+      if (row.section) {
+        sectionString = `${row.section.type} ${row.section.num}`
       }
       return (<tr key={row.classNumber}>
-        <td className={styles.section}>{row.section.type} {row.section.num}</td>
+        <td className={styles.section}>{sectionString}</td>
         <td className={styles.classNumber}>{row.classNumber}</td>
         <td className={styles.enrolled}>{row.enrolTotal} / {row.enrolCap}</td>
         <td className={styles.time}>{timeString}</td>
