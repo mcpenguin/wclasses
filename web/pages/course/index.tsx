@@ -7,10 +7,11 @@ import { TermCode } from "@utils/termCode";
 import Schedule from "@components/schedule";
 import styles from "@styles/course.module.css"
 import Course from "@models/Course";
+import Class from "@models/Class";
 
 export default function CoursePage(props: any) {
   const courseDetails: Course = JSON.parse(props.courseDetails);
-  const schedule = JSON.parse(props.schedule);
+  const schedule: { [key: string]: Class[] } = JSON.parse(props.schedule);
   const courseName = props.courseName;
   return (
     <>
@@ -27,8 +28,8 @@ export default function CoursePage(props: any) {
           Object.entries(schedule)
             .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
             .map(([termcode, data]) => <>
-            <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
-          <Schedule scheduleData={data} />
+              <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
+              <Schedule scheduleData={data} />
           </>)
         }
       </main>
