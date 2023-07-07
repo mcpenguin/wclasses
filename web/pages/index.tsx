@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import CourseForm from '../components/courseForm'
+import ProfForm from '@components/profForm'
 
 export default function Home() {
   return (
@@ -44,6 +45,7 @@ export default function Home() {
           Find my contact details and other projects here on my <a href="https://marcus-chan.me">personal website</a>
         </p>
         <CourseForm />
+        <ProfForm />
       </main>
     </div>
   )
