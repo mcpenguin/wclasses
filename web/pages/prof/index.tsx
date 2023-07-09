@@ -8,16 +8,23 @@ import getCourseDetailsAsync from "@controllers/getCourseDetails";
 import getProfClassesAsync from "@controllers/getProfClasses";
 import Course from "@models/Course";
 import Class from "@models/Class";
+import getProfUWFlowDetailsAsync from "@controllers/getProfUWFlowDetails";
+import ProfUWFlowData from "@models/ProfUWFlowData";
+
+import styles from "@styles/prof.module.css"
+import MyProgressBar from "@components/myProgressBar";
 
 type Props = {
   profName: string;
   profClassDetails: string;
+  profUWFlowDetails: string;
   courseDetails: string;
 };
 
 export default function ProfPage(props: Props) {
   const courseDetails: { [key: string]: Course } = JSON.parse(props.courseDetails);
   const profClassDetails: { [key: string]: Class[] } = JSON.parse(props.profClassDetails);
+  const profUWFlowDetails: ProfUWFlowData = JSON.parse(props.profUWFlowDetails);
   const profName = props.profName;
   return (
     <>
@@ -27,28 +34,52 @@ export default function ProfPage(props: Props) {
       </Head>
 
       <main>
-        <h1 className="course-title">{profName}</h1>
-        <h2>Courses Taught</h2>
-        {Object.entries(profClassDetails)
-          .sort((a, b) => {
-              const [aterm, asubj, acatalog] = a[0].split(" ");
-              const [bterm, bsubj, bcatalog] = b[0].split(" ");
-              return bterm.localeCompare(aterm) ||
-                asubj.localeCompare(bsubj) ||
-                acatalog.localeCompare(bcatalog);
-            }
-          )
-          .map(([k, data]) => {
-            const [term, subjectCode, catalogNumber] = k.split(" "); 
-            const courseDetail = courseDetails[`${subjectCode}${catalogNumber}`];
-            const courseName = courseDetail ? courseDetail.title : "Unknown"
-            return (<>
+        <h1>{profName}</h1>
+        <div className={styles.parent}>
+          <div>
+            <h2>Courses Taught</h2>
+            {Object.entries(profClassDetails)
+              .sort((a, b) => {
+                  const [aterm, asubj, acatalog] = a[0].split(" ");
+                  const [bterm, bsubj, bcatalog] = b[0].split(" ");
+                  return bterm.localeCompare(aterm) ||
+                    asubj.localeCompare(bsubj) ||
+                    acatalog.localeCompare(bcatalog);
+                }
+              )
+              .map(([k, data]) => {
+                const [term, subjectCode, catalogNumber] = k.split(" "); 
+                const courseDetail = courseDetails[`${subjectCode}${catalogNumber}`];
+                const courseName = courseDetail ? courseDetail.title : "Unknown"
+                return (<>
+                  <h3>
+                    {subjectCode} {catalogNumber} - {courseName} [{new TermCode(term).getName()}]
+                  </h3>
+                  <Schedule scheduleData={data} />
+                </>);
+              })}
+          </div>
+          <div>
+              <h2>UW Flow Ratings</h2>
+              <h3>Liked: {(profUWFlowDetails.rating.liked * 100).toFixed(2)}%</h3>
+              <MyProgressBar
+                value={profUWFlowDetails.rating.liked}
+                color="#114873"
+              />
+              <h3>Clear: {(profUWFlowDetails.rating.clear * 100).toFixed(2)}%</h3>
+              <MyProgressBar
+                value={profUWFlowDetails.rating.clear}
+                color="#111c73"
+              />
               <h3>
-                {subjectCode} {catalogNumber} - {courseName} [{new TermCode(term).getName()}]
+                Engaging: {(profUWFlowDetails.rating.engaging * 100).toFixed(2)} %
               </h3>
-              <Schedule scheduleData={data} />
-            </>);
-          })}
+              <MyProgressBar
+                value={profUWFlowDetails.rating.engaging}
+                color="#3b1173"
+              />
+          </div>
+        </div>
       </main>
     </>
   );
@@ -87,10 +118,14 @@ export async function getServerSideProps(ctx: {
     }
   }
 
+  const profUWFlowDetails = await getProfUWFlowDetailsAsync(firstName, lastName);
+  console.log(profUWFlowDetails);
+
   return {
     props: {
       profName: `${firstName} ${lastName}`,
       profClassDetails: JSON.stringify(profClassDetails),
+      profUWFlowDetails: JSON.stringify(profUWFlowDetails),
       courseDetails: JSON.stringify(courseDetails),
     },
   };
