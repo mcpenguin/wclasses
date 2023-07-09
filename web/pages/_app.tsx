@@ -6,8 +6,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 const roboto = Roboto({
   weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-roboto'
+  subsets: ['latin']
 })
  
 export default function MyApp({ Component, pageProps }: AppProps) {

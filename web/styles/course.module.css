@@ -1,3 +1,11 @@
 .description {
   width: 75%;
 }
+
+.parent {
+  display: flex;
+}
+
+.offerings {
+  width: 50vw;
+}

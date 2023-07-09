@@ -10,6 +10,8 @@ import Course from "@models/Course";
 import Class from "@models/Class";
 import getCourseUWFlowDetails from "@controllers/getCourseUWFlowDetails";
 import CourseUWFlowData from "@models/CourseUWFlowData";
+import MyProgressBar from "@components/myProgressBar";
+import { UW_FLOW_LINK } from "@constants";
 
 type Props = {
   courseName: string;
@@ -23,6 +25,7 @@ export default function CoursePage(props: Props) {
   const courseUWFlowDetails: CourseUWFlowData = JSON.parse(props.courseUWFlowDetails)
   const schedule: { [key: string]: Class[] } = JSON.parse(props.schedule);
   const courseName = props.courseName;
+  const uwFlowLink = `${UW_FLOW_LINK}/course/${courseDetails.subjectCode.toLowerCase()}${courseDetails.catalogNumber.toLowerCase()}`
   return (
     <>
       <Head>
@@ -33,8 +36,8 @@ export default function CoursePage(props: Props) {
       <main>
         <h1 className="course-title">{courseName} - {courseDetails.title}</h1>
         <p className={styles.description}>{courseDetails.description}</p>
-        <div>
-          <div>
+        <div className={styles.parent}>
+          <div className={styles.offerings}>
             <h2>Offerings</h2>
             {
               Object.entries(schedule)
@@ -45,8 +48,16 @@ export default function CoursePage(props: Props) {
               </>)
             }
           </div>
-          <div>
-            Hello text here
+          <div className={styles.uwflow}>
+            <h2>UW Flow Link</h2>
+            <a href={uwFlowLink}>{uwFlowLink}</a>
+            <h2>UW Flow Ratings</h2>
+            <h3>Liked: {(courseUWFlowDetails.liked * 100).toFixed(2)}%</h3>
+            <MyProgressBar value={courseUWFlowDetails.liked} color="#114873" />
+            <h3>Easy: {(courseUWFlowDetails.easy * 100).toFixed(2)}%</h3>
+            <MyProgressBar value={courseUWFlowDetails.easy} color="#111c73" />
+            <h3>Useful: {(courseUWFlowDetails.useful * 100).toFixed(2)} %</h3>
+            <MyProgressBar value={courseUWFlowDetails.useful} color="#3b1173"/>
           </div>
         </div>
       </main>
