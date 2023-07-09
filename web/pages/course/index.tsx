@@ -8,6 +8,7 @@ import Schedule from "@components/schedule";
 import styles from "@styles/course.module.css"
 import Course from "@models/Course";
 import Class from "@models/Class";
+import getCourseUWFlowDetails from "@controllers/getCourseUWFlowDetails";
 
 export default function CoursePage(props: any) {
   const courseDetails: Course = JSON.parse(props.courseDetails);
@@ -53,6 +54,9 @@ export async function getServerSideProps(ctx: { query: {subjectCode: string, cat
     };
   }
   const schedule = await getSchedule(subjectCode, catalogNumber, undefined) // get for all terms
+
+  const courseUWFlowDetails = await getCourseUWFlowDetails(subjectCode, catalogNumber);
+  console.log(courseUWFlowDetails);
 
   return {
     props: {
