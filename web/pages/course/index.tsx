@@ -9,9 +9,18 @@ import styles from "@styles/course.module.css"
 import Course from "@models/Course";
 import Class from "@models/Class";
 import getCourseUWFlowDetails from "@controllers/getCourseUWFlowDetails";
+import CourseUWFlowData from "@models/CourseUWFlowData";
 
-export default function CoursePage(props: any) {
+type Props = {
+  courseName: string;
+  courseDetails: string;
+  courseUWFlowDetails: string;
+  schedule: string;
+};
+
+export default function CoursePage(props: Props) {
   const courseDetails: Course = JSON.parse(props.courseDetails);
+  const courseUWFlowDetails: CourseUWFlowData = JSON.parse(props.courseUWFlowDetails)
   const schedule: { [key: string]: Class[] } = JSON.parse(props.schedule);
   const courseName = props.courseName;
   return (
@@ -24,15 +33,22 @@ export default function CoursePage(props: any) {
       <main>
         <h1 className="course-title">{courseName} - {courseDetails.title}</h1>
         <p className={styles.description}>{courseDetails.description}</p>
-        <h2>Offerings</h2>
-        {
-          Object.entries(schedule)
-            .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
-            .map(([termcode, data]) => <>
-              <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
-              <Schedule scheduleData={data} />
-          </>)
-        }
+        <div>
+          <div>
+            <h2>Offerings</h2>
+            {
+              Object.entries(schedule)
+                .sort((a,b) => parseInt(b[0]) - parseInt(a[0]))
+                .map(([termcode, data]) => <>
+                  <h3>{new TermCode(termcode).getName()} [{termcode}]</h3>
+                  <Schedule scheduleData={data} />
+              </>)
+            }
+          </div>
+          <div>
+            Hello text here
+          </div>
+        </div>
       </main>
     </>
   );
@@ -56,12 +72,12 @@ export async function getServerSideProps(ctx: { query: {subjectCode: string, cat
   const schedule = await getSchedule(subjectCode, catalogNumber, undefined) // get for all terms
 
   const courseUWFlowDetails = await getCourseUWFlowDetails(subjectCode, catalogNumber);
-  console.log(courseUWFlowDetails);
 
   return {
     props: {
       courseName: `${subjectCode} ${catalogNumber}`,
       courseDetails: JSON.stringify(courseDetails[0]),
+      courseUWFlowDetails: JSON.stringify(courseUWFlowDetails),
       schedule: JSON.stringify(schedule),
     },
   };

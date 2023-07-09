@@ -5,12 +5,13 @@ import Header from '../components/header'
 import { Analytics } from '@vercel/analytics/react';
 
 const roboto = Roboto({
-  weight: '400',
+  weight: ['400', '700'],
   subsets: ['latin'],
+  variable: '--font-roboto'
 })
  
 export default function MyApp({ Component, pageProps }: AppProps) {
-  return <main className={roboto.className}>
+  return <main className={`${roboto.className}`}>
     <Header />
     <Component {...pageProps} />
     <Analytics />
