@@ -4,8 +4,30 @@
 
 .parent {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  flex: auto;
 }
 
 .offerings {
   width: 50vw;
+}
+
+.requisites {
+  width: 100vw;
+  display: flex;
+}
+
+.requisites div {
+  width: 25%;
+  padding-right: 20px;
+}
+
+.uwflow >* a {
+  color: rgb(21, 41, 97);
+  text-decoration: none;
+}
+
+.uwflow >* a:hover {
+  text-decoration: underline;
 }
