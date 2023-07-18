@@ -13,6 +13,7 @@ import ProfUWFlowData from "@models/ProfUWFlowData";
 
 import styles from "@styles/prof.module.css"
 import MyProgressBar from "@components/myProgressBar";
+import toTitleCase from "@utils/toTitleCase";
 
 type Props = {
   profName: string;
@@ -89,7 +90,8 @@ export async function getServerSideProps(ctx: {
   query: { firstName: string; lastName: string };
 }) {
   const { query } = ctx;
-  const { firstName, lastName } = query;
+  const firstName = toTitleCase(query.firstName);
+  const lastName = toTitleCase(query.lastName);
   if (!firstName || !lastName) {
     return {
       notFound: true,
@@ -119,7 +121,6 @@ export async function getServerSideProps(ctx: {
   }
 
   const profUWFlowDetails = await getProfUWFlowDetailsAsync(firstName, lastName);
-  console.log(profUWFlowDetails);
 
   return {
     props: {

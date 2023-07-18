@@ -12,6 +12,7 @@ import getCourseUWFlowDetails from "@controllers/getCourseUWFlowDetails";
 import CourseUWFlowData from "@models/CourseUWFlowData";
 import MyProgressBar from "@components/myProgressBar";
 import { UW_FLOW_LINK } from "@constants";
+import toTitleCase from "@utils/toTitleCase";
 
 type Props = {
   courseName: string;
@@ -113,8 +114,8 @@ export async function getServerSideProps(ctx: {
   query: { subjectCode: string; catalogNumber: string };
 }) {
   const { query } = ctx;
-  const subjectCode = query["subjectCode"];
-  const catalogNumber = query["catalogNumber"];
+  const subjectCode = query["subjectCode"].toUpperCase();
+  const catalogNumber = query["catalogNumber"].toUpperCase();
   if (!subjectCode || !catalogNumber) {
     return {
       notFound: true,

@@ -18,6 +18,13 @@ export default function CourseForm() {
   return(
     <div className={styles.container}>
       <h2 className={styles.title}>View Course</h2>
+      <p>
+        The subject code is the subject associated with the course, e.g. CS, MATH, ENGL, CO, PSYCH, etc.
+        <br />
+        The catalog number is the rest of the course code, e.g. 135, 246E, 108D, etc.
+        <br />
+        So, for the course MATH 135, the subject code would be MATH, and the catalog number would be 135.
+      </p>
       <form onSubmit={handleSubmit}>
         <div className={styles.input}>
           <label className={styles.label}>Subject Code</label>

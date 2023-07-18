@@ -39,6 +39,10 @@ export default function Home() {
         <p>
           Find my contact details and other projects here on my <a href="https://marcus-chan.me">personal website</a>
         </p>
+        <p>
+          Check out the code and suggest changes/improvements on the <a href="https://github.com/mcpenguin/wclasses">GitHub</a> for
+          this website.
+        </p>
         <CourseForm />
         <ProfForm />
       </main>
