@@ -24,4 +24,9 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       - name: Running the Python script
+        env:
+          MONGO_WRITER_URL: ${{ secrets.MONGO_WRITER_URL }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_COLLECTION_COURSES: ${{ secrets.DB_COLLECTION_COURSES }}
+          DB_COLLECTION_COURSE_DESCRIPTIONS: ${{ secrets.DB_COLLECTION_COURSE_DESCRIPTIONS }}
         run: python scripts/get_class_schedule.py
