@@ -9,7 +9,8 @@ async function getProfClassesAsync(firstName: string, lastName: string): Promise
 
   const query = {
     instructor: {
-      $regex: `${lastName},.*${firstName}`
+      $regex: `${lastName},.*${firstName}`,
+      $options: "i",
     }
   }
   const result = await classes

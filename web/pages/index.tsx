@@ -18,7 +18,7 @@ export default function Home() {
           Welcome to WClasses!
         </p>
         <p>
-          This is a very alpha build of a project that I have been thinking of
+          This is an alpha build of a project that I have been thinking of
           working on for a while.
         </p>
         <p>
@@ -29,8 +29,6 @@ export default function Home() {
         <ul>
           <li>view past offerings of courses;</li>
           <li>view what courses professors have taught in the past;</li>
-          <li>view what faculty professors are from, as well as their contact details; (WIP)</li>
-          <li>view examination schedules for a course. (WIP)</li>
         </ul>
         <p>
           Note: since much of the data is in a table format, it might not be ideal to view

@@ -90,8 +90,10 @@ export async function getServerSideProps(ctx: {
   query: { firstName: string; lastName: string };
 }) {
   const { query } = ctx;
-  const firstName = toTitleCase(query.firstName);
-  const lastName = toTitleCase(query.lastName);
+  // const firstName = toTitleCase(query.firstName);
+  // const lastName = toTitleCase(query.lastName);
+  const firstName = query.firstName;
+  const lastName = query.lastName;
   if (!firstName || !lastName) {
     return {
       notFound: true,
