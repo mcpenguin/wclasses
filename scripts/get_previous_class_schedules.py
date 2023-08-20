@@ -2,7 +2,7 @@
 
 from bs4 import BeautifulSoup
 
-from helpers import parse_time_string
+from helpers import parse_time_string, parse_term_code
 from datetime import datetime
 import pytz
 
@@ -12,6 +12,7 @@ import os
 from dotenv import load_dotenv
 
 import itertools
+from tqdm import tqdm
 
 # python script to get uwflow metrics
 
@@ -21,6 +22,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.chrome.options import Options
+
+import chromedriver_autoinstaller
 
 load_dotenv()
 
@@ -195,8 +198,11 @@ def get_previous_class_schedule(driver, client, start_term=None, specific_terms=
     # list of subject codes (get if non empty)
     subjects = [option.attrs['value'] for option in soup.find('select', {'name': 'subject'}).find_all('option') if option.attrs['value']]
 
+    pbar = tqdm(list(itertools.product(terms, levels, subjects)))
+
     # iterate over product of terms, levels, subjects
-    for (term, level, subject) in itertools.product(terms, levels, subjects):
+    for (term, level, subject) in pbar:
+        pbar.set_postfix(term=parse_term_code(term), level='UG' if level == 'under' else 'G', subject=subject)
         # select relevant term, level, subject from the relevant dropdown lists
         term_option = driver.find_element_by_css_selector(f"option[value='{term}']")
         term_option.click()
@@ -219,7 +225,7 @@ def get_previous_class_schedule(driver, client, start_term=None, specific_terms=
             # add classesList list to db
             add_subject_to_db(term, level, subject, classesList, client)
 
-            print(f"Added courses for subject {subject} for term {term} for level {'UG' if level == 'under' else 'G'}")
+            # print(f"Added courses for subject {subject} for term {term} for level {'UG' if level == 'under' else 'G'}")
         except Exception as e:
             pass
 
@@ -233,6 +239,9 @@ if __name__ == '__main__':
     # get mongodb database using mongo client
     client = MongoClient(os.getenv('MONGO_WRITER_URL'))
     print("Connected to client")
+
+    print("Installing ChromeDriver...")
+    chromedriver_autoinstaller.install()
 
     # get all courses from mongo client
     collection = client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSE_DESCRIPTIONS')]
