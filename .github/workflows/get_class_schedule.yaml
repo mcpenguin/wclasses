@@ -1,6 +1,8 @@
 name: Get Class Schedule for Current and Last Term
 on:
   workflow_dispatch:
+  schedule:
+  - cron: "10,25,40,55 * * * *"
 jobs:
   run:
     runs-on: ubuntu-latest
