@@ -2,7 +2,7 @@ name: Get Class Schedule for Current and Last Term
 on:
   workflow_dispatch:
 jobs:
-  scrape:
+  run:
     runs-on: ubuntu-latest
     steps:
       - name: Checking out repo
