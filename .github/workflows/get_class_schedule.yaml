@@ -21,7 +21,7 @@ jobs:
         
        # Need to fetch reqs if needed
       - name: Installing all necessary packages
-        run: pip install -r requirements.txt
+        run: pip install -r scripts/requirements.txt
 
       - name: Running the Python script
-        run: python get_class_schedule.py
+        run: python scripts/get_class_schedule.py
