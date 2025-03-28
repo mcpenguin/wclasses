@@ -8,5 +8,6 @@ dist
 server/dist
 
 .next
+*.pyc
 
 

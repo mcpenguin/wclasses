@@ -31,6 +31,8 @@ if __name__ == '__main__':
     collection = client[os.getenv('DB_NAME')][os.getenv('DB_COLLECTION_COURSES')]
     
     chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox");
+    chrome_options.add_argument("--disable-dev-shm-usage");
     chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(options=chrome_options)
     print("Driver up and running.")
